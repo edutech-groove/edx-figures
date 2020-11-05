@@ -35,11 +35,12 @@ else:
     from lms.djangoapps.certificates.models import GeneratedCertificate  # noqa pylint: disable=unused-import,import-error
 
 
-try:
-    from lms.djangoapps.courseware.models import StudentModule  # noqa pylint: disable=unused-import,import-error
-except ImportError:
-    # Backward compatibily for pre-Juniper releases
+# Backward compatibily for pre-Juniper releases
+if RELEASE_LINE in ['ginkgo', 'hawthorn']:
     from courseware.models import StudentModule  # noqa pylint: disable=unused-import,import-error
+else:
+    from lms.djangoapps.courseware.models import StudentModule  # noqa pylint: disable=unused-import,import-error
+
 
 try:
     from lms.djangoapps.courseware.courses import get_course_by_id  # noqa pylint: disable=unused-import,import-error
