@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import apiConfig from 'base/apiConfig';
 import { trackPromise } from 'react-promise-tracker';
-import styles from './_courses-list-content.scss';
 import HeaderAreaLayout from 'base/components/layout/HeaderAreaLayout';
 import HeaderContentStatic from 'base/components/header-views/header-content-static/HeaderContentStatic';
 import Paginator from 'base/components/layout/Paginator';
 import ListSearch from 'base/components/inputs/ListSearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faAngleDoubleUp, faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons';
-
-import classNames from 'classnames/bind';
-let cx = classNames.bind(styles);
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const parseCourseDate = (fetchedDate) => {
   if (fetchedDate === null) {
@@ -46,7 +42,7 @@ class CoursesList extends Component {
     this.constructApiUrl = this.constructApiUrl.bind(this);
   }
 
-  constructApiUrl(rootUrl, searchQuery, orderingType, perPageLimit, resultsOffset) {
+  constructApiUrl(rootUrl, searchQuery, orderingType, perPageLimit, resultsOffset) {
     let requestUrl = rootUrl;
     // add search term
     requestUrl += '?search=' + searchQuery;
@@ -111,7 +107,7 @@ class CoursesList extends Component {
   }
 
   render() {
-
+    
     const listItems = this.state.coursesList.map((course, index) => {
       var metrics_enrollment_count = 'N/A';
       var metrics_num_learners_completed = 'N/A';
@@ -123,83 +119,89 @@ class CoursesList extends Component {
           metrics_num_learners_completed = course['metrics']['num_learners_completed'];
         }
       }
-
+      
       return (
-        <li key={course['id']} className={styles['course-list-item']}>
-          <div className={styles['course-name']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+        <tr key={`course-${index}`} className='course-list-item'>
+          <td className='course-name'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Course name:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 <Link
-                  className={styles['course-name-link']}
+                  className='course-name-link'
                   to={'/figures/course/' + course['course_id']}
                 >
                   {course['course_name']}
                 </Link>
               </div>
             </div>
-          </div>
-          <div className={styles['course-id']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='course-id'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Course ID:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {course['course_id']}
               </div>
             </div>
-          </div>
-          <div className={styles['start-date']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='start-date'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Course start:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {parseCourseDate(course['start_date'])}
               </div>
             </div>
-          </div>
-          <div className={styles['self-paced']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='self-paced'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Self paced:
-              </div>
-              <div className={styles['mobile-value']}>
-                {course['self_paced'] ? <FontAwesomeIcon icon={faCheck} className={styles['checkmark-icon']} /> : '-'}
+              </div> */}
+              <div className='mobile-value'>
+                {course['self_paced'] ? 
+                <svg xmlns="http://www.w3.org/2000/svg" width="14.235" height="10.237" viewBox="0 0 14.235 10.237">
+                  <g transform="translate(0 0)">
+                    <path d="M548.55,398.508l-4.9-4.729.882-.913,4,3.86,8.455-8.454.9.9Z" transform="translate(-543.653 -388.271)"/>
+                  </g>
+                </svg>
+                : '-'}
               </div>
             </div>
-          </div>
-          <div className={styles['enrolments']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='enrolments'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Enrolments:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {metrics_enrollment_count}
               </div>
             </div>
-          </div>
-          <div className={styles['completions']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='completions'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Completions:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {metrics_num_learners_completed}
               </div>
             </div>
-          </div>
-          <div className={styles['action-container']}>
+          </td>
+          <td className='action-container'>
             <Link
-              className={styles['course-action']}
+              className='course-action'
               to={'/figures/course/' + course['course_id']}
             >
               Details
             </Link>
-          </div>
-        </li>
+          </td>
+        </tr>
       )
     })
 
@@ -208,81 +210,90 @@ class CoursesList extends Component {
         <HeaderAreaLayout>
           <HeaderContentStatic
             title='Courses list'
-            subtitle={'This view allows you to browse your sites courses. Total number of results: ' + this.state.count + '.'}
-          />
+          >
+            <React.Fragment>
+              This view allows you to browse your sites courses. Total number of results <span>{this.state.count}</span>
+            </React.Fragment>
+          </HeaderContentStatic>
         </HeaderAreaLayout>
-        <div className={cx({ 'container': true, 'courses-content': true})}>
-          <ListSearch
-            valueChangeFunction={this.setSearchQuery}
-            inputPlaceholder='Search by course name, code or ID...'
-          />
-          {this.state.pages ? (
-            <Paginator
-              pageSwitchFunction={this.getCourses}
-              currentPage={this.state.currentPage}
-              perPage={this.state.perPage}
-              pages={this.state.pages}
-              changePerPageFunction={this.setPerPage}
+        <div className='container courses-content'>
+          <div className='page-header'>
+            <ListSearch
+              valueChangeFunction={this.setSearchQuery}
+              inputPlaceholder='Search by course name, code or ID...'
             />
-          ) : ''}
-          <ul className={styles['courses-list']}>
-            <li key='list-header' className={cx(styles['course-list-item'], styles['list-header'])}>
-              <div className={styles['course-name']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'display_name') ? this.setOrdering('display_name') : this.setOrdering('-display_name')}
-                >
-                  <span>
-                    Course name
-                  </span>
-                  {(this.state.ordering === 'display_name') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-display_name') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['course-id']}>
-                Course ID:
-              </div>
-              <div className={styles['start-date']}>
-                Course start:
-              </div>
-              <div className={styles['self-paced']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'self_paced') ? this.setOrdering('self_paced') : this.setOrdering('-self_paced')}
-                >
-                  <span>
-                    Self paced
-                  </span>
-                  {(this.state.ordering === 'self_paced') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-self_paced') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['enrolments']}>
-                Enrolments:
-              </div>
-              <div className={styles['completions']}>
-                Completions:
-              </div>
-              <div className={styles['action-container']}>
+            {this.state.pages ? (
+              <Paginator
+                pageSwitchFunction={this.getCourses}
+                currentPage={this.state.currentPage}
+                perPage={this.state.perPage}
+                pages={this.state.pages}
+                changePerPageFunction={this.setPerPage}
+              />
+            ) : ''}
+          </div>
+          <table className='courses-list'>
+            <thead>
+              <tr key='list-header' className='course-list-item list-header'>
+                <th className='course-name'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'display_name') ? this.setOrdering('display_name') : this.setOrdering('-display_name')}
+                  >
+                    <span>
+                      Course name
+                    </span>
+                    {(this.state.ordering === 'display_name') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-display_name') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='course-id'>
+                  Course ID
+                </th>
+                <th className='start-date'>
+                  Course start
+                </th>
+                <th className='self-paced'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'self_paced') ? this.setOrdering('self_paced') : this.setOrdering('-self_paced')}
+                  >
+                    <span>
+                      Self paced
+                    </span>
+                    {(this.state.ordering === 'self_paced') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-self_paced') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='enrolments'>
+                  Enrolments
+                </th>
+                <th className='completions'>
+                  Completions
+                </th>
+                <th className='action-container'>
 
-              </div>
-            </li>
-            {listItems}
-          </ul>
+                </th>
+              </tr>
+            </thead>
+            <tbody>{listItems}</tbody>
+          </table>
           {this.state.pages ? (
-            <Paginator
-              pageSwitchFunction={this.getCourses}
-              currentPage={this.state.currentPage}
-              perPage={this.state.perPage}
-              pages={this.state.pages}
-              changePerPageFunction={this.setPerPage}
-            />
+            <div className='page-footer'>
+              <Paginator
+                pageSwitchFunction={this.getCourses}
+                currentPage={this.state.currentPage}
+                perPage={this.state.perPage}
+                pages={this.state.pages}
+                changePerPageFunction={this.setPerPage}
+              />
+            </div>
           ) : ''}
         </div>
       </div>

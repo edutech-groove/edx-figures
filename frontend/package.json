@@ -60,6 +60,7 @@
     "react-router-redux": "next",
     "react-select": "^2.0.0",
     "react-spinners": "^0.3.3",
+    "react-tooltip": "^4.2.17",
     "react-transition-group": "^2.5.0",
     "react-vivus": "^0.0.2",
     "recharts": "^1.3.2",
@@ -77,8 +78,8 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "PRIMARY_COLOR=#E60978 node scripts/start.js",
+    "build": "PRIMARY_COLOR=#E60978 REM_BASE=16 BASE_FONT_SIZE=16 node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {

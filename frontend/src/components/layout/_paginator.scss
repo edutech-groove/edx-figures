@@ -16,11 +16,11 @@
     margin-left: auto;
 
     .paginator-dropdown-label {
+      @include fz(15);
       flex-shrink: 0;
       flex-grow: 0;
       display: inline-block;
       margin-right: calcRem(10);
-      font-size: calcRem(12);
       color: #666;
     }
   }
@@ -34,28 +34,8 @@
     align-items: center;
   }
 
+  .text-item-dummy,
   .text-item {
-    display: block;
-    padding: 1rem;
-    font-size: calcRem(14);
-    color: $primary-color;
-    margin-right: calcRem(5);
-    border: none;
-    background: none;
-    outline: none;
-
-    &:hover {
-      opacity: 0.6;
-      cursor: pointer;
-    }
-  }
-
-  .text-item-dummy {
-    display: block;
-    padding: calcRem(10);
-    font-size: calcRem(14);
-    color: #ccc;
-    pointer-events: none;
     margin-right: calcRem(5);
   }
 
@@ -65,31 +45,59 @@
     margin-right: calcRem(5);
   }
 
-  .number-item {
+  .text-item,
+  .text-item-dummy,
+  .number-item,
+  .number-item-active {
+    @include fz(15);
+    border-radius: $globalRadius*2;
+    border: 1px solid transparent;
     display: block;
-    padding: calcRem(10);
-    font-size: calcRem(14);
-    color: $primary-color;
-    margin-right: calcRem(5);
-    border: none;
-    background: none;
+    height: 32px;
+    line-height: 30px;
+    min-width: 32px;
     outline: none;
+    padding: 0 6px;
+    text-align: center;
 
     &:hover {
-      opacity: 0.6;
       cursor: pointer;
     }
   }
 
-  .number-item-active {
-    display: block;
-    padding: calcRem(10);
-    font-size: calcRem(14);
-    color: #ccc;
-    pointer-events: none;
+  .text-item,
+  .text-item-dummy {
+    color: $textColor01;
+    background-color: $grey08;
+
+    &:hover {
+      background-color: $color03;
+      color: $color01;
+    }
+  }
+
+  .number-item {
+    background-color: $color01;
+    color: $textColor01;
     margin-right: calcRem(5);
-    border: none;
-    background: none;
-    outline: none;
+
+    &:hover {
+      background-color: $color01;
+      color: $color03;
+    }
+  }
+
+  .number-item-active {
+    color: $primary-color;
+    background-color: $color22;
+    pointer-events: none;
+
+    & + .number-item {
+      margin-left: calcRem(5);
+    }
+
+    & + .text-item-dummy {
+      margin-left: calcRem(5);
+    }
   }
 }

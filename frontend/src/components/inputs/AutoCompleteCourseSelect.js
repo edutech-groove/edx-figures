@@ -1,25 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Autosuggest from 'react-autosuggest';
-import { Link } from 'react-router-dom';
-import styles from './_autocomplete-course-select.scss';
-import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import apiConfig from 'base/apiConfig';
-
-let cx = classNames.bind(styles);
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Autosuggest from "react-autosuggest";
+import { Link } from "react-router-dom";
+import apiConfig from "base/apiConfig";
 
 const WAIT_INTERVAL = 1000;
 
-const getSuggestionValue = suggestion => suggestion.courseName;
+const getSuggestionValue = (suggestion) => suggestion.courseName;
 
 class AutoCompleteCourseSelect extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
+      value: "",
       suggestions: [],
       modalActive: false,
     };
@@ -30,52 +24,66 @@ class AutoCompleteCourseSelect extends Component {
     this.storeInputReference = this.storeInputReference.bind(this);
   }
 
+  onClearSearch = () => {
+    this.setState(
+      {
+        value: "",
+      },
+      () => {
+        this.input.focus();
+      }
+    );
+  };
+
   modalTrigger = () => {
-    this.setState({
-      modalActive: !this.state.modalActive,
-      value: ''
-    }, () => {
-      this.state.modalActive && this.input.focus();
-    });
-  }
+    this.setState(
+      {
+        modalActive: !this.state.modalActive,
+        value: "",
+      },
+      () => {
+        this.state.modalActive && this.input.focus();
+      }
+    );
+  };
 
   onChange = (event, { newValue }) => {
     clearTimeout(this.timer);
 
     this.setState({
-      value: newValue
+      value: newValue,
     });
 
     this.timer = setTimeout(this.doSearch, WAIT_INTERVAL);
   };
 
   doSearch = () => {
-    const requestUrl = apiConfig.coursesGeneral + '?search=' + encodeURIComponent(this.state.value);
-    fetch((requestUrl), { credentials: "same-origin" })
-      .then(response => response.json())
-      .then(json => this.setState({
-        suggestions: json['results'],
-      })
-    )
-  }
+    const requestUrl =
+      apiConfig.coursesGeneral +
+      "?search=" +
+      encodeURIComponent(this.state.value);
+    fetch(requestUrl, { credentials: "same-origin" })
+      .then((response) => response.json())
+      .then((json) =>
+        this.setState({
+          suggestions: json["results"],
+        })
+      );
+  };
 
-  onSuggestionsClearRequested = () => {
-
-  }
+  onSuggestionsClearRequested = () => {};
 
   onSuggestionSelected = () => {
     this.setState({
       modalActive: false,
-      value: '',
+      value: "",
       suggestions: [],
     });
-  }
-
-  onSuggestionsFetchRequested = () => {
-
   };
 
-  storeInputReference = autosuggest => {
+  onSuggestionsFetchRequested = () => {};
+
+  storeInputReference = (autosuggest) => {
     if (autosuggest !== null) {
       this.input = autosuggest.input;
     }
@@ -91,94 +99,125 @@ class AutoCompleteCourseSelect extends Component {
     const inputProps = {
       placeholder: this.props.inputPlaceholder,
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
     };
 
-    const renderSuggestion = suggestion => (
-      <Link className={styles['suggestion-link']} to={'/figures/course/' + suggestion['course_id']} onClick={this.modalTrigger}>
-        <div className={styles['suggestion-link__link-upper']}>
-          <span className={styles['suggestion-link__course-number']}>{suggestion['course_code']}</span>
-          <span className={styles['suggestion-link__course-id']}>{suggestion['course_id']}</span>
+    const renderSuggestion = (suggestion) => (
+      <Link
+        className="suggestion-link"
+        to={"/figures/course/" + suggestion["course_id"]}
+        onClick={this.modalTrigger}
+      >
+        <div className="suggestion-link__course-number">
+          {suggestion["course_code"]}
         </div>
-        <span className={styles['suggestion-link__course-name']}>{suggestion['course_name']}</span>
+        <div className="suggestion-link__course-name">
+          {suggestion["course_name"]}
+        </div>
+        <div className="suggestion-link__course-id">
+          {suggestion["course_id"]}
+        </div>
       </Link>
     );
 
-
     return (
-      <div className={styles['ac-course-selector']}>
-        <button onClick={this.modalTrigger} className={cx({ 'selector-trigger-button': true, 'positive': !this.props.negativeStyleButton, 'negative': this.props.negativeStyleButton })}>{this.props.buttonText}</button>
+      <div className="ac-course-selector ac-course-button">
+        <button
+          onClick={this.modalTrigger}
+          className={"ignore selector-trigger-button" + (!this.props.negativeStyleButton ? ' positive' : ' negative')}
+        >
+          {this.props.buttonText}
+        </button>
         {this.state.modalActive && (
-          <div className={styles['selector-modal']}>
-            <Autosuggest
-              suggestions = {suggestions}
-              onSuggestionsFetchRequested = {this.onSuggestionsFetchRequested}
-              onSuggestionsClearRequested = {this.onSuggestionsClearRequested}
-              getSuggestionValue = {getSuggestionValue}
-              renderSuggestion = {renderSuggestion}
-              inputProps = {inputProps}
-              theme = {styles}
-              alwaysRenderSuggestions
-              ref={this.storeInputReference}
-            />
-            <button onClick={this.modalTrigger} className={styles['modal-dismiss']}><FontAwesomeIcon icon={faTimes}/></button>
+          <div className="selector-modal">
+            <div>
+              <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+                alwaysRenderSuggestions
+                ref={this.storeInputReference}
+              />
+              {this.state.value ?
+              (<button className="dismiss-btn" onClick={this.onClearSearch}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path fill="#cbcbcb" d="M11.375,3.375a8,8,0,1,0,8,8A8,8,0,0,0,11.375,3.375Zm2.027,10.9-2.027-2.027L9.348,14.271a.615.615,0,1,1-.869-.869l2.027-2.027L8.479,9.348a.615.615,0,0,1,.869-.869l2.027,2.027L13.4,8.479a.615.615,0,0,1,.869.869l-2.027,2.027L14.271,13.4a.618.618,0,0,1,0,.869A.611.611,0,0,1,13.4,14.271Z" transform="translate(-3.375 -3.375)"/>
+                  </svg>
+              </button>) :
+              (<span className="search-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.414 18.414">
+                  <g transform="translate(-3.5 -3.5)">
+                    <path d="M18.722,11.611A7.111,7.111,0,1,1,11.611,4.5a7.111,7.111,0,0,1,7.111,7.111Z" transform="translate(0)"/>
+                    <path d="M28.842,28.842l-3.867-3.867" transform="translate(-8.342 -8.342)"/>
+                  </g>
+                </svg>
+              </span>)}
+            </div>
           </div>
         )}
-        {this.state.modalActive && <div className={styles['selector-backdrop']} onClick={this.modalTrigger}></div>}
+        {this.state.modalActive && (
+          <div
+            className="selector-backdrop"
+            onClick={this.modalTrigger}
+          ></div>
+        )}
       </div>
-    )
+    );
   }
 }
 
 AutoCompleteCourseSelect.defaultProps = {
   negativeStyleButton: false,
-  buttonText: 'Select a course',
-  inputPlaceholder: 'Start typing to search...',
+  buttonText: "Select a course",
+  inputPlaceholder: "Start typing to search...",
   coursesList: [
     {
-      courseId: 'A101',
-      courseName: 'This is the name of the course'
+      courseId: "A101",
+      courseName: "This is the name of the course",
     },
     {
-      courseId: 'A102',
-      courseName: 'This is another name of the course'
+      courseId: "A102",
+      courseName: "This is another name of the course",
     },
     {
-      courseId: 'A103',
-      courseName: 'My introduction to EdX Figures'
+      courseId: "A103",
+      courseName: "My introduction to EdX Figures",
     },
     {
-      courseId: 'A101',
-      courseName: 'This is the name of the course'
+      courseId: "A101",
+      courseName: "This is the name of the course",
     },
     {
-      courseId: 'A102',
-      courseName: 'This is another name of the course'
+      courseId: "A102",
+      courseName: "This is another name of the course",
     },
     {
-      courseId: 'A103',
-      courseName: 'My introduction to EdX Figures'
+      courseId: "A103",
+      courseName: "My introduction to EdX Figures",
     },
     {
-      courseId: 'A101',
-      courseName: 'This is the name of the course'
+      courseId: "A101",
+      courseName: "This is the name of the course",
     },
     {
-      courseId: 'A102',
-      courseName: 'This is another name of the course'
+      courseId: "A102",
+      courseName: "This is another name of the course",
     },
     {
-      courseId: 'A103',
-      courseName: 'My introduction to EdX Figures'
-    }
-  ]
-}
+      courseId: "A103",
+      courseName: "My introduction to EdX Figures",
+    },
+  ],
+};
 
 AutoCompleteCourseSelect.propTypes = {
   negativeStyleButton: PropTypes.bool,
   buttonText: PropTypes.string,
   inputPlaceholder: PropTypes.string,
-  coursesList: PropTypes.array
+  coursesList: PropTypes.array,
 };
 
-export default AutoCompleteCourseSelect
+export default AutoCompleteCourseSelect;

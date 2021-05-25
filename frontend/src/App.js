@@ -14,11 +14,17 @@ import SingleReportContent from 'base/views/SingleReportContent';
 import UsersList from 'base/views/UsersList';
 import CoursesList from 'base/views/CoursesList';
 import ProgressOverview from 'base/views/ProgressOverview';
-import 'base/sass/base/_base-overrides.scss';
-import styles from 'base/sass/base/_grid.scss';
-
+// import 'base/sass/base/_base-overrides.scss';
 
 class App extends Component {
+  addAppRootClass = () => {
+    const dom = document.querySelector(".content-wrapper.for--static");
+
+    if (!dom)
+      return null;
+
+    dom.classList.add('content--figures');
+  }
 
   componentDidMount() {
     this.props.fetchActiveUsersGeneralData();
@@ -28,13 +34,14 @@ class App extends Component {
     this.props.fetchNewUsersGeneralData();
     this.props.fetchCourseCompletionsGeneralData();
     (process.env.ENABLE_CSV_REPORTS === "enabled") && this.props.fetchAllCsvReportsData();
+
+    this.addAppRootClass();
   }
 
   render() {
-
     return (
       <LoadingSpinner>
-        <main id="main" className={styles['layout-root']}>
+        <main id="main" className='grv-theme--main layout-root'>
           <Route render={ ({location}) => (
             <ReactCSSTransitionReplace
               transitionName = 'page'

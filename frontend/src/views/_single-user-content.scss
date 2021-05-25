@@ -12,6 +12,7 @@
 
   .user-information {
     grid-column-end: span 1;
+    width: 340px;
 
     @media (max-width: $tablet-breakpoint) {
       padding: 0 calcRem(30);
@@ -30,28 +31,42 @@
       width: 100%;
 
       li {
-        border-top: calcRem(1) solid lighten($base-text-color, 75%);
+        border-top: calcRem(1) dashed lighten($base-text-color, 75%);
         list-style-type: none;
         padding: calcRem(15) 0;
         display: flex;
         align-items: baseline;
         width: 100%;
 
+        .label,
+        .value {
+          @include fz(15);
+        }
+
         .label {
-          display: block;
-          font-size: calcRem(11);
-          color: lighten($base-text-color, 20%);
-          flex-shrink: 0;
-          flex-grow: 0;
-          width: calcRem(80);
+          align-items: center;
+          color: $textColor01;
+          display: flex;
+          flex: 0 0 auto;
           padding-right: calcRem(20);
+          width: 180px;
+
+          & > img {
+            margin-right: 10px;
+          }
         }
 
         .value {
-          font-size: calcRem(14);
-          flex-shrink: 1;
           flex-grow: 1;
+          flex-shrink: 1;
+          font-weight: 600;
+          text-align: right;
           width: 100%;
+          word-break: break-word;
+
+          a {
+            color: $textColor01;
+          }
         }
       }
     }

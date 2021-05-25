@@ -9,18 +9,20 @@
 }
 
 .users-list {
-  padding: calcRem(25) 0;
-  border-top: 1px solid #ccc;
+  border-top: none;
+  margin: 0;
+  padding: 0;
 }
 
 .user-list-item {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr;
-  grid-column-gap: calcRem(20);
-  border-bottom: 1px solid #ccc;
-  padding: calcRem(20) 0;
-  font-size: calcRem(14);
+  @include fz(15);
   align-items: center;
+  border-bottom: 1px dashed $grey03;
+  color: $textColor01;
+  display: grid;
+  grid-column-gap: calcRem(20);
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr;
+  padding: calcRem(20) 0;
 
   @media (max-width: $half-screen-breakpoint) {
     grid-template-columns: 1fr;
@@ -28,10 +30,13 @@
   }
 
   &.list-header {
+    align-items: flex-end;
     font-size: calcRem(12);
+    padding: 15px 0;
   }
 
   .sorting-header-button {
+    color: $textColor02;
     padding: 0;
     margin: 0;
     background: none;
@@ -39,9 +44,16 @@
     outline: none;
 
     span {
+      @include fz(13);
+      color: $textColor02;
       margin-right: calcRem(5);
-      text-decoration: underline;
-      font-size: calcRem(12);
+      text-decoration: none;
+      text-transform: uppercase;
+
+      & + svg {
+        @include fz(13);
+        color: $textColor02;
+      }
     }
 
     &:hover, &:focus {
@@ -50,13 +62,9 @@
   }
 
   .user-fullname-link {
-    color: $primary-color;
+    color: $primary-color !important;
     font-weight: bold;
     text-decoration: none;
-  }
-
-  .user-fullname, .username {
-
   }
 
   .is-active, .number-of-courses, .date-joined {
@@ -65,6 +73,14 @@
     @media (max-width: $half-screen-breakpoint) {
       text-align: left;
     }
+  }
+
+  .number-of-courses {
+    @include fz(13);
+    color: $textColor02;
+    margin-right: calcRem(5);
+    text-decoration: none;
+    text-transform: uppercase;
   }
 
   .action-container {
@@ -77,27 +93,17 @@
   }
 
   .user-action {
-    font-size: calcRem(14);
-    padding: calcRem(8) calcRem(15);
-    font-weight: normal;
-    color: $primary-color;
-    border: calcRem(1) solid $primary-color;
-    background: transparent;
+    @include useLightYellowButton;
+    @include fz(15);
+    border: none;
+    box-shadow: none;
     cursor: pointer;
-    border-radius: calcRem(30);
-    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    min-width: 100px;
+    outline: none;
+    text-align: center;
     text-decoration: none;
-
-    &:hover {
-      color: #fff;
-      background: $primary-color;
-    }
-
-    @media (max-width: $half-screen-breakpoint) {
-      display: inline-block;
-      min-width: calcRem(200);
-      text-align: center;
-    }
+    transition-duration: 100ms;
   }
 }
 
@@ -121,6 +127,10 @@
   .mobile-value {
     flex-grow: 1;
     flex-shrink: 1;
-    width: 100%;
+    width: 99%;
+
+    .checkmark-icon {
+      color: $primary-color;
+    }
   }
 }

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { trackPromise } from 'react-promise-tracker';
-import classNames from 'classnames/bind';
-import styles from './_single-course-content.scss';
 import HeaderAreaLayout from 'base/components/layout/HeaderAreaLayout';
 import HeaderContentCourse from 'base/components/header-views/header-content-course/HeaderContentCourse';
 import BaseStatCard from 'base/components/stat-cards/BaseStatCard';
@@ -11,8 +9,6 @@ import LearnerStatistics from 'base/components/learner-statistics/LearnerStatist
 import CourseLearnersList from 'base/components/course-learners-list/CourseLearnersList';
 import apiConfig from 'base/apiConfig';
 import courseMonthlyMetrics from 'base/apiServices/courseMonthlyMetrics';
-
-let cx = classNames.bind(styles);
 
 class SingleCourseContent extends Component {
   constructor(props) {
@@ -72,42 +68,44 @@ class SingleCourseContent extends Component {
             learnersEnrolled = {this.state.courseData.getIn(['learners_enrolled'])}
           />
         </HeaderAreaLayout>
-        <div className={cx({ 'container': true, 'course-quick-links': true})}>
-          <span className={styles['course-quick-links__line']}></span>
-          <a href={"/courses/" + this.props.courseId} target="_blank" className={styles['course-quick-links__link']}>Open this course in LMS</a>
+        <div className='container course-quick-links'>
+          <a href={"/courses/" + this.props.courseId} target="_blank" className='course-quick-links__link'>Open this course in LMS</a>
         </div>
-        <div className={cx({ 'container': true, 'base-grid-layout': true, 'dashboard-content': true})}>
-          <BaseStatCard
-            cardTitle='Active users'
-            fetchDataKey={'active_users'}
-            fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-          />
-          <BaseStatCard
-            cardTitle='Number of enrolled learners'
-            fetchDataKey={'course_enrollments'}
-            fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-          />
-          <BaseStatCard
-            cardTitle='Average course progress'
-            fetchDataKey={'avg_progress'}
-            fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            dataType='percentage'
-          />
-          <BaseStatCard
-            cardTitle='Average days to complete'
-            fetchDataKey={'avg_days_to_complete'}
-            fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-          />
-          <BaseStatCard
-            cardTitle='User course completions'
-            fetchDataKey={'num_learners_completed'}
-            fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-            fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
-          />
+        <div className='container base-grid-layout dashboard-content'>
+          <div className="stat-card-grid">
+            
+            <BaseStatCard
+              cardTitle='Active users'
+              fetchDataKey={'active_users'}
+              fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+            />
+            <BaseStatCard
+              cardTitle='Number of enrolled learners'
+              fetchDataKey={'course_enrollments'}
+              fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+            />
+            <BaseStatCard
+              cardTitle='Average course progress'
+              fetchDataKey={'avg_progress'}
+              fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              dataType='percentage'
+            />
+            <BaseStatCard
+              cardTitle='Average days to complete'
+              fetchDataKey={'avg_days_to_complete'}
+              fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+            />
+            <BaseStatCard
+              cardTitle='User course completions'
+              fetchDataKey={'num_learners_completed'}
+              fetchValueFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+              fetchHistoryFunction={(dataKey) => courseMonthlyMetrics.getSpecificWithHistory(this.props.courseId, dataKey)}
+            />
+          </div>
           <LearnerStatistics
             learnersData = {this.state.learnersList}
           />

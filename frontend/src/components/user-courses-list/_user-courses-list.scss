@@ -5,7 +5,7 @@
 
 .user-courses-list {
   grid-column: span 3;
-  padding-left: calcRem(30);
+  padding-left: calcRem(40);
 
   @media (max-width: $tablet-breakpoint) {
     grid-column: span 1;
@@ -14,12 +14,13 @@
 }
 
 .course-item {
-  width: 100%;
-  display: flex;
   align-items: center;
-  position: relative;
-  padding-bottom: calcRem(28);
+  display: flex;
+  flex-flow: row wrap;
   margin-bottom: calcRem(20);
+  padding-bottom: calcRem(28);
+  position: relative;
+  width: 100%;
 
   @media (max-width: $tablet-breakpoint) {
     display: block;
@@ -27,67 +28,66 @@
   }
 
   .course-info {
-    width: calcRem(250);
-    padding-right: calcRem(20);
-    margin-right: calcRem(20);
-    border-right: 1px solid lighten($base-text-color, 70%);
+    @include fz(17);
+    border-bottom: none;
+    flex: 0 0 auto;
+    margin-right: 0;
     max-width: 100%;
-    flex-shrink: 0;
-    flex-grow: 0;
+    padding-right: 0;
+    width: 100%;
 
     @media (max-width: $tablet-breakpoint) {
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px solid lighten($base-text-color, 70%);
-      margin-right: 0;
       margin-bottom: calcRem(20);
       padding-bottom: calcRem(20);
     }
 
     .course-code {
+      @include fz(14);
       display: block;
-      font-size: calcRem(14);
-      font-weight: bold;
-      color: $primary-color;
+      color: $color02;
       margin-bottom: calcRem(5);
     }
 
     .course-name {
+      @include fz(17);
+      color: $color02;
       display: block;
-      font-size: calcRem(18);
       font-weight: bold;
-      color: $base-text-color;
-      margin-bottom: calcRem(10);
       line-height: 130%;
+      margin-bottom: 15px;
     }
   }
 
   .user-stats {
-    padding: 0;
-    margin: 0;
     display: flex;
-    width: 100%;
     flex-grow: 1;
     flex-shrink: 1;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 
     .stat {
       flex-grow: 0;
       flex-shrink: 0;
       width: 25%;
       list-style-type: none;
-      text-align: center;
+      text-align: left;
+
+      .stat-label,
+      .stat-value {
+        @include fz(15);
+      }
 
       .stat-label {
         display: block;
         width: 100%;
         margin-bottom: calcRem(10);
-        font-size: calcRem(12);
-        color: lighten($base-text-color, 30%);
+        color: $textColor01;
       }
 
       .stat-value {
-        font-size: calcRem(14);
         display: block;
+        font-weight: 600;
 
         .completed-icon {
           color: $positive-color;
@@ -101,13 +101,14 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: calcRem(8);
+    height: calcRem(6);
     background-color: #eee;
 
     .bar {
+      border-radius: $globalRadius;
       background-color: $primary-color;
       display: block;
-      height: calcRem(8);
+      height: calcRem(6);
 
       &.finished {
         background-color: $positive-color;

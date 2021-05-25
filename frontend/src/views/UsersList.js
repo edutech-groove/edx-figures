@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import apiConfig from 'base/apiConfig';
 import { trackPromise } from 'react-promise-tracker';
-import styles from './_users-list-content.scss';
 import HeaderAreaLayout from 'base/components/layout/HeaderAreaLayout';
 import HeaderContentStatic from 'base/components/header-views/header-content-static/HeaderContentStatic';
 import Paginator from 'base/components/layout/Paginator';
 import ListSearch from 'base/components/inputs/ListSearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faAngleDoubleUp, faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons';
-
-import classNames from 'classnames/bind';
-let cx = classNames.bind(styles);
-
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 class UsersList extends Component {
   constructor(props) {
@@ -35,7 +30,7 @@ class UsersList extends Component {
     this.constructApiUrl = this.constructApiUrl.bind(this);
   }
 
-  constructApiUrl(rootUrl, searchQuery, orderingType, perPageLimit, resultsOffset) {
+  constructApiUrl(rootUrl, searchQuery, orderingType, perPageLimit, resultsOffset) {
     let requestUrl = rootUrl;
     // add search term
     requestUrl += '?search=' + searchQuery;
@@ -97,71 +92,77 @@ class UsersList extends Component {
 
     const listItems = this.state.usersList.map((user, index) => {
       return (
-        <li key={user['id']} className={styles['user-list-item']}>
-          <div className={styles['user-fullname']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+        <tr key={user['id']} className='user-list-item'>
+          <td className='user-fullname'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Full name:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 <Link
-                  className={styles['user-fullname-link']}
+                  className='user-fullname-link'
                   to={'/figures/user/' + user['id']}
                 >
                   {user['fullname']}
                 </Link>
               </div>
             </div>
-          </div>
-          <div className={styles['username']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='username'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Username:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {user['username']}
               </div>
             </div>
-          </div>
-          <div className={styles['is-active']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='is-active'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Is activated:
-              </div>
-              <div className={styles['mobile-value']}>
-                {user['is_active'] ? <FontAwesomeIcon icon={faCheck} className={styles['checkmark-icon']} /> : '-'}
+              </div> */}
+              <div className='mobile-value'>
+                {user['is_active'] ? 
+                <svg xmlns="http://www.w3.org/2000/svg" width="14.235" height="10.237" viewBox="0 0 14.235 10.237">
+                  <g transform="translate(0 0)">
+                    <path d="M548.55,398.508l-4.9-4.729.882-.913,4,3.86,8.455-8.454.9.9Z" transform="translate(-543.653 -388.271)"/>
+                  </g>
+                </svg>
+                : '-'}
               </div>
             </div>
-          </div>
-          <div className={styles['date-joined']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='date-joined'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 Date joined:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {user['date_joined']}
               </div>
             </div>
-          </div>
-          <div className={styles['number-of-courses']}>
-            <div className={styles['in-cell-label-value']}>
-              <div className={styles['mobile-label']}>
+          </td>
+          <td className='number-of-courses'>
+            <div className='in-cell-label-value'>
+              {/* <div className='mobile-label'>
                 No. of courses:
-              </div>
-              <div className={styles['mobile-value']}>
+              </div> */}
+              <div className='mobile-value'>
                 {user['courses'].length}
               </div>
             </div>
-          </div>
-          <div className={styles['action-container']}>
+          </td>
+          <td className='action-container'>
             <Link
-              className={styles['user-action']}
+              className='user-action'
               to={'/figures/user/' + user['id']}
             >
               User details
             </Link>
-          </div>
-        </li>
+          </td>
+        </tr>
       )
     })
 
@@ -170,10 +171,12 @@ class UsersList extends Component {
         <HeaderAreaLayout>
           <HeaderContentStatic
             title='Users list'
-            subtitle={'This view allows you to browse your sites users. Total number of results: ' + this.state.count + '.'}
-          />
+          >
+            This view allows you to browse your sites users. Total number of results <span>{this.state.count}</span>
+          </HeaderContentStatic>
         </HeaderAreaLayout>
-        <div className={cx({ 'container': true, 'users-content': true})}>
+        <div className='container users-content'>
+          <div className='page-header'>
           <ListSearch
             valueChangeFunction={this.setSearchQuery}
             inputPlaceholder='Search by users name, username or email...'
@@ -187,85 +190,90 @@ class UsersList extends Component {
               changePerPageFunction={this.setPerPage}
             />
           ) : ''}
-          <ul className={styles['users-list']}>
-            <li key='list-header' className={cx(styles['user-list-item'], styles['list-header'])}>
-              <div className={styles['user-fullname']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'profile__name') ? this.setOrdering('profile__name') : this.setOrdering('-profile__name')}
-                >
-                  <span>
-                    User full name
-                  </span>
-                  {(this.state.ordering === 'profile__name') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-profile__name') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['username']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'username') ? this.setOrdering('username') : this.setOrdering('-username')}
-                >
-                  <span>
-                    Username
-                  </span>
-                  {(this.state.ordering === 'username') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-username') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['is-active']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'is_active') ? this.setOrdering('is_active') : this.setOrdering('-is_active')}
-                >
-                  <span>
-                    Is activated
-                  </span>
-                  {(this.state.ordering === 'is_active') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-is_active') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['date-joined']}>
-                <button
-                  className={styles['sorting-header-button']}
-                  onClick={() => (this.state.ordering !== 'date_joined') ? this.setOrdering('date_joined') : this.setOrdering('-date_joined')}
-                >
-                  <span>
-                    Date joined
-                  </span>
-                  {(this.state.ordering === 'date_joined') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleUp} />
-                  ) : (this.state.ordering === '-date_joined') ? (
-                    <FontAwesomeIcon icon={faAngleDoubleDown} />
-                  ) : ''}
-                </button>
-              </div>
-              <div className={styles['number-of-courses']}>
-                Courses enroled in:
-              </div>
-              <div className={styles['action-container']}>
+          </div>
+          <table className='users-list'>
+            <thead>
+              <tr key='list-header' className='user-list-item list-header'>
+                <th className='user-fullname'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'profile__name') ? this.setOrdering('profile__name') : this.setOrdering('-profile__name')}
+                  >
+                    <span>
+                      User full name
+                    </span>
+                    {(this.state.ordering === 'profile__name') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-profile__name') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='username'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'username') ? this.setOrdering('username') : this.setOrdering('-username')}
+                  >
+                    <span>
+                      Username
+                    </span>
+                    {(this.state.ordering === 'username') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-username') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='is-active'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'is_active') ? this.setOrdering('is_active') : this.setOrdering('-is_active')}
+                  >
+                    <span>
+                      Is activated
+                    </span>
+                    {(this.state.ordering === 'is_active') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-is_active') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='date-joined'>
+                  <button
+                    className='sorting-header-button'
+                    onClick={() => (this.state.ordering !== 'date_joined') ? this.setOrdering('date_joined') : this.setOrdering('-date_joined')}
+                  >
+                    <span>
+                      Date joined
+                    </span>
+                    {(this.state.ordering === 'date_joined') ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (this.state.ordering === '-date_joined') ? (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    ) : ''}
+                  </button>
+                </th>
+                <th className='number-of-courses'>
+                  Courses enroled in
+                </th>
+                <th className='action-container'>
 
-              </div>
-            </li>
-            {listItems}
-          </ul>
+                </th>
+              </tr>
+            </thead>
+            <tbody>{listItems}</tbody>
+          </table>
           {this.state.pages ? (
-            <Paginator
-              pageSwitchFunction={this.getUsers}
-              currentPage={this.state.currentPage}
-              perPage={this.state.perPage}
-              pages={this.state.pages}
-              changePerPageFunction={this.setPerPage}
-            />
+            <div className='page-footer'>
+              <Paginator
+                pageSwitchFunction={this.getUsers}
+                currentPage={this.state.currentPage}
+                perPage={this.state.perPage}
+                pages={this.state.pages}
+                changePerPageFunction={this.setPerPage}
+              />
+            </div>
           ) : ''}
         </div>
       </div>
