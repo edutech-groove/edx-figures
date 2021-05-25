@@ -166,7 +166,7 @@ class CoursesList extends Component {
                 Enrolments:
               </div>
               <div className={styles['mobile-value']}>
-                {course['metrics']['enrollment_count']}
+                {course['metrics'] ? course['metrics']['enrollment_count'] : ''}
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@ class CoursesList extends Component {
                 Completions:
               </div>
               <div className={styles['mobile-value']}>
-                {course['metrics']['num_learners_completed']}
+                {course['metrics'] ? course['metrics']['num_learners_completed'] : ''}
               </div>
             </div>
           </div>
