@@ -47,6 +47,7 @@ home for functionality.
 
 import calendar
 import datetime
+import logging
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.timezone import utc
@@ -56,6 +57,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, MONTHLY
 
 from opaque_keys.edx.keys import CourseKey
+logger = logging.getLogger(__name__)
 
 
 def is_multisite():
@@ -214,4 +216,7 @@ def get_userid_for_username(lst_username):
     params: list of username (string)
     return: list of users ids
     """
-    return [get_user_model().objects.get(username=username).id for username in lst_username]
+    try:
+        return [get_user_model().objects.get(username=username).id for username in lst_username]
+    except Exception as e:
+        logger.exception("Incorrect list of username: {0}".format(lst_username))
