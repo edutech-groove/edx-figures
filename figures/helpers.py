@@ -48,6 +48,7 @@ home for functionality.
 import calendar
 import datetime
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.utils.timezone import utc
 
 from dateutil.parser import parse as dateutil_parse
@@ -206,3 +207,11 @@ def first_last_days_for_month(month_for):
                              month=month,
                              day=days_in_month(first_day))
     return first_day, last_day
+
+
+def get_userid_for_username(lst_username):
+    """
+    params: list of username (string)
+    return: list of users ids
+    """
+    return [get_user_model().objects.get(username=username).id for username in lst_username]

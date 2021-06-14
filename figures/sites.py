@@ -21,7 +21,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from courseware.models import StudentModule  # pylint: disable=import-error
 from student.models import CourseEnrollment  # pylint: disable=import-error
 
-from figures.helpers import as_course_key
+from figures.helpers import as_course_key, get_userid_for_username
 import figures.helpers
 
 
@@ -181,11 +181,18 @@ def get_user_ids_for_site(site):
 
 
 def get_users_for_site(site):
+    exclude_ids = get_userid_for_username(settings.FIGURES_EXCLUDE_USERS)
     if figures.helpers.is_multisite():
         user_ids = get_user_ids_for_site(site)
-        users = get_user_model().objects.filter(id__in=user_ids)
+        if exclude_ids:
+            users = get_user_model().objects.filter(id__in=user_ids).exclude(id__in=exclude_ids)
+        else:
+            users = get_user_model().objects.filter(id__in=user_ids)
     else:
-        users = get_user_model().objects.all()
+        if exclude_ids:
+            users = get_user_model().objects.all().exclude(id__in=exclude_ids)
+        else:
+            users = get_user_model().objects.all()
     return users
 
 
