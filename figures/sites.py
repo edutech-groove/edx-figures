@@ -186,7 +186,7 @@ def get_users_for_site(site):
         users = get_user_model().objects.filter(id__in=user_ids)
     else:
         users = get_user_model().objects.all()
-    return users
+    return users.exclude(username__in=settings.FIGURES_EXCLUDE_USERS)
 
 
 def get_course_enrollments_for_site(site):
