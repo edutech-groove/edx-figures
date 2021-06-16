@@ -14,79 +14,9 @@ class LearnerStatistics extends Component {
     super(props);
     this.state = {
       breakdownType: this.props.breakdownType,
-      graphData: [],
-      countryStats: List([
-        {
-          value: "n-a",
-          label: "Not available",
-          count: 0
-        }
-      ]),
-      genderStats: List([
-        {
-          value: "m",
-          label: "Male",
-          count: 0
-        },
-        {
-          value: "f",
-          label: "Female",
-          count: 0
-        },
-        {
-          value: "o",
-          label: "Other / Prefer not to say",
-          count: 0
-        }
-      ]),
-      educationLevelStats: List([
-        {
-          value: "p",
-          label: "PhD or Doctorate",
-          count: 0
-        },
-        {
-          value: "m",
-          label: "Master's or professional degree",
-          count: 0
-        },
-        {
-          value: "b",
-          label: "Bachelor's degree",
-          count: 0
-        },
-        {
-          value: "a",
-          label: "Associate's degree",
-          count: 0
-        },
-        {
-          value: "hs",
-          label: "Secondary/high school",
-          count: 0
-        },
-        {
-          value: "jhs",
-          label: "Junior secondary/junior high/middle school",
-          count: 0
-        },
-        {
-          value: "none",
-          label: "None",
-          count: 0
-        },
-        {
-          value: "o",
-          label: "Other",
-          count: 0
-        },
-        {
-          value: "n-a",
-          label: "Not available",
-          count: 0
-        }
-      ])
+      graphData: []
     };
+    this.handleReset();
     this.onChangeBreakdownType = this.onChangeBreakdownType.bind(this);
     this.retrieveData = this.retrieveData.bind(this);
     this.analyzeData = this.analyzeData.bind(this);
@@ -99,6 +29,80 @@ class LearnerStatistics extends Component {
       this.retrieveData(payload.value);
     });
   }
+
+  handleReset = () => {
+    this.state.countryStats = List([
+      {
+        value: "n-a",
+        label: "Not available",
+        count: 0
+      }
+    ]);
+    this.state.genderStats = List([
+      {
+        value: "m",
+        label: "Male",
+        count: 0
+      },
+      {
+        value: "f",
+        label: "Female",
+        count: 0
+      },
+      {
+        value: "o",
+        label: "Other / Prefer not to say",
+        count: 0
+      }
+    ]);
+    this.state.educationLevelStats = List([
+      {
+        value: "p",
+        label: "PhD or Doctorate",
+        count: 0
+      },
+      {
+        value: "m",
+        label: "Master's or professional degree",
+        count: 0
+      },
+      {
+        value: "b",
+        label: "Bachelor's degree",
+        count: 0
+      },
+      {
+        value: "a",
+        label: "Associate's degree",
+        count: 0
+      },
+      {
+        value: "hs",
+        label: "Secondary/high school",
+        count: 0
+      },
+      {
+        value: "jhs",
+        label: "Junior secondary/junior high/middle school",
+        count: 0
+      },
+      {
+        value: "none",
+        label: "None",
+        count: 0
+      },
+      {
+        value: "o",
+        label: "Other",
+        count: 0
+      },
+      {
+        value: "n-a",
+        label: "Not available",
+        count: 0
+      }
+    ]);
+  };
 
   analyzeData = (learnersData) => {
     let countryStats = this.state.countryStats;
@@ -146,6 +150,7 @@ class LearnerStatistics extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
+    this.handleReset();
     this.analyzeData(nextProps.learnersData);
   }
 
