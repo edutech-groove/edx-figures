@@ -443,7 +443,7 @@ class LearnerMetricsViewSet(CommonAuthMixin, viewsets.ReadOnlyModelViewSet):
         qs = figures.sites.get_users_for_site(site).filter(
             courseenrollment__course_id__in=course_keys
             ).select_related('profile').prefetch_related('courseenrollment_set')
-        return qs
+        return qs.distinct()
 
     def get_queryset(self):
         """
