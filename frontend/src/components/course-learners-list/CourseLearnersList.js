@@ -52,7 +52,7 @@ class CourseLearnersList extends Component {
               </g>
             </svg>
           }</td>
-          <td className='date-completed'>{courseSpecificData.getIn(['progress_data', 'course_completed'], false) ? moment(courseSpecificData.getIn(['progress_data', 'date_completed'])).format('LL') : '-'}</td>
+          <td className='date-completed'>{courseSpecificData.getIn(['progress_data', 'course_completed'], false) ? moment(courseSpecificData.getIn(['progress_data', 'course_completed'])).format('LL') : '-'}</td>
         </tr>
       )
     })
