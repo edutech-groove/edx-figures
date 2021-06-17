@@ -130,7 +130,7 @@ class LearnerStatistics extends Component {
       countryStats: countryStats.sortBy(item => item.count).reverse(),
       genderStats: genderStats.sortBy(item => item.count).reverse(),
       educationLevelStats: educationLevelStats.sortBy(item => item.count).reverse()
-    }, () => this.retrieveData(this.props.breakdownType))
+    }, () => this.retrieveData(this.state.breakdownType))
   }
 
   retrieveData = (parameter) => {
