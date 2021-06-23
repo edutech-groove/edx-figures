@@ -255,7 +255,7 @@ class UsersList extends Component {
                   </button>
                 </th>
                 <th className='number-of-courses'>
-                  Courses enroled in
+                  Courses enrolled in
                 </th>
                 <th className='action-container'>
 
