@@ -186,7 +186,9 @@ def get_users_for_site(site):
         users = get_user_model().objects.filter(id__in=user_ids)
     else:
         users = get_user_model().objects.all()
-    return users.exclude(username__in=settings.FIGURES_EXCLUDE_USERS)
+    
+    excluded_users = getattr(settings, 'OPENEDX_EXCLUDE_USERS', [])
+    return users.exclude(username__in=excluded_users)
 
 
 def get_course_enrollments_for_site(site):
