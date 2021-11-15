@@ -188,7 +188,7 @@ def get_users_for_site(site):
         users = get_user_model().objects.all()
     
     excluded_users = getattr(settings, 'OPENEDX_EXCLUDE_USERS', [])
-    return users.exclude(username__in=excluded_users)
+    return users.exclude(is_superuser=True).exclude(username__in=excluded_users)
 
 
 def get_course_enrollments_for_site(site):
